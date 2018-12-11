@@ -5,9 +5,11 @@
  */
 package br.com.hunter.views.user;
 
+import br.com.hunter.db.dao.DaoUser;
 import br.com.hunter.models.user.User;
 import br.com.hunter.services.date.ConvertDate;
 import br.com.hunter.views.home.ViewHome;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.logging.Level;
@@ -201,17 +203,14 @@ public class ViewCreateUser extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
-        ConvertDate cd = new ConvertDate();
+        user = new User(jTextFieldUsername.getText(), jTextFieldName.getText(), jTextFieldDate.getText(), jPasswordField.getText());
+
+        DaoUser du = new DaoUser();
         try {
-            correctDate = cd.convertDate(jTextFieldDate.getText());
-        } catch (ParseException ex) {
+            du.createUser(user);
+        } catch (SQLException ex) {
             Logger.getLogger(ViewCreateUser.class.getName()).log(Level.SEVERE, null, ex);
         }
-        user = new User(jTextFieldUsername.getText(), jTextFieldName.getText(), correctDate, jPasswordField.getText());
-        System.out.println(user.getUsername());
-        System.out.println(user.getName());
-        System.out.println(user.getBirth());
-        System.out.println(user.getPassword());
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
@@ -219,9 +218,14 @@ public class ViewCreateUser extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jLabelBackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelBackMouseClicked
-        ViewHome vh = new ViewHome();
-        vh.setVisible(true);
-        this.dispose();
+        ViewHome vh;
+        try {
+            vh = new ViewHome();
+            vh.setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewCreateUser.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jLabelBackMouseClicked
 
     /**

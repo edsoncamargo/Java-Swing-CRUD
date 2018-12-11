@@ -12,13 +12,13 @@ import java.util.Date;
  * @author edson
  */
 public class User {
-    
+
     String username;
     String name;
-    Date birth;
+    String birth;
     String password;
 
-    public User(String username, String name, Date birth, String password) {
+    public User(String username, String name, String birth, String password) {
         this.username = username;
         this.name = name;
         this.birth = birth;
@@ -37,7 +37,7 @@ public class User {
         return name;
     }
 
-    public Date getBirth() {
+    public String getBirth() {
         return birth;
     }
 
@@ -53,12 +53,12 @@ public class User {
         this.name = name;
     }
 
-    public void setBirth(Date birth) {
+    public void setBirth(String birth) {
         this.birth = birth;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
 }

@@ -5,7 +5,11 @@
  */
 package br.com.hunter.views.home;
 
+import br.com.hunter.db.utils.ConnectionUtils;
 import br.com.hunter.views.user.ViewCreateUser;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,8 +20,11 @@ public class ViewHome extends javax.swing.JFrame {
     /**
      * Creates new form ViewHome
      */
-    public ViewHome() {
+    ConnectionUtils conn = new ConnectionUtils();
+
+    public ViewHome() throws SQLException {
         initComponents();
+        conn.getConnection();
     }
 
     /**
@@ -156,7 +163,7 @@ public class ViewHome extends javax.swing.JFrame {
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
         ViewCreateUser vcu = new ViewCreateUser();
         vcu.setVisible(true);
-        
+
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     /**
@@ -189,7 +196,11 @@ public class ViewHome extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewHome().setVisible(true);
+                try {
+                    new ViewHome().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ViewHome.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
