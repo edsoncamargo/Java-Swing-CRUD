@@ -24,7 +24,9 @@ public class DaoUser {
     ResultSet rs;
 
     // Metódo de cadastrar cliente (recebendo por parâmetro o cliente que será cadastrado)
-    public void createUser(User user) throws SQLException {
+    public String createUser(User user) throws SQLException {
+        String reply = null;
+
         try {
             String query = "insert into tb_user"
                     + "(UserName, Name, Birth, Password)"
@@ -39,11 +41,13 @@ public class DaoUser {
 
             pst.execute();
         } catch (Exception e) {
-            System.out.println(e);
+            reply = e.toString();
         }
+
+        return reply;
     }
 
-    public ArrayList<User> showUsers() throws SQLException {
+    public ArrayList<User> getUsers() throws SQLException {
         String query = "select * from tb_user";
         ArrayList users = new ArrayList();
 
@@ -60,6 +64,24 @@ public class DaoUser {
         }
 
         return users;
+    }
+
+    public User searchUsername(String username) {
+        User search = new User();
+        try {
+            String query = "select * from tb_user where UserName like '%" + username + "%'";
+            pst = conex.getConnection().prepareStatement(query);
+            rs = pst.executeQuery(query);
+            rs.first();
+            search.setId(Integer.valueOf(rs.getString("ID")));
+            search.setUsername(rs.getString("UserName"));
+            search.setName(rs.getString("Name"));
+            search.setBirth(rs.getString("Birth"));
+            return search;
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
 }

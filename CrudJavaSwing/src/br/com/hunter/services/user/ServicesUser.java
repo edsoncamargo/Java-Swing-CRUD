@@ -28,10 +28,11 @@ public class ServicesUser {
         reply = ValidatorUser.validate(user);
         
         if (reply == null) {
-            try {
+            if (du.createUser(user) != null) {
+                return "O nome de usuário utilizado já está em uso!"
+                        + "";
+            } else {
                 du.createUser(user);
-            } catch (Exception e) {
-                System.out.println(e);
             }
         }
         

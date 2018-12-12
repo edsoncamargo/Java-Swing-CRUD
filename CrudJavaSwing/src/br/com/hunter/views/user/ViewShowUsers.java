@@ -6,8 +6,11 @@
 package br.com.hunter.views.user;
 
 import br.com.hunter.db.dao.user.DaoUser;
+import br.com.hunter.db.utils.ConnectionUtils;
 import br.com.hunter.models.user.User;
+import br.com.hunter.services.user.ServicesUser;
 import br.com.hunter.views.home.ViewHome;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -23,7 +26,8 @@ public class ViewShowUsers extends javax.swing.JFrame {
 
     DaoUser du = new DaoUser();
     User user = new User();
-    ArrayList<User> users = du.showUsers();
+    ArrayList<User> users = du.getUsers();
+    ConnectionUtils conex = new ConnectionUtils();
 
     /**
      * Creates new form ViewShowUsers
@@ -90,6 +94,11 @@ public class ViewShowUsers extends javax.swing.JFrame {
         jLabelSearch.setText("Search user by name");
 
         jTextFieldSearch.setBackground(new java.awt.Color(255, 230, 151));
+        jTextFieldSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldSearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelBackgroundLayout = new javax.swing.GroupLayout(jPanelBackground);
         jPanelBackground.setLayout(jPanelBackgroundLayout);
@@ -157,7 +166,9 @@ public class ViewShowUsers extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelBackMouseClicked
 
     private void jListUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListUsersMouseClicked
-        if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() != 2) {
+            return;
+        } else {
             User selectedUser = new User();
             String userClicked = jListUsers.getSelectedValue();
             for (User user : this.users) {
@@ -174,6 +185,17 @@ public class ViewShowUsers extends javax.swing.JFrame {
                     + "<br>" + selectedUser.getBirth() + "</html>");
         }
     }//GEN-LAST:event_jListUsersMouseClicked
+
+    private void jTextFieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchActionPerformed
+        User search = du.searchUsername(jTextFieldSearch.getText());
+        if (search != null) {
+            JOptionPane.showMessageDialog(null, "<html>" + search.getUsername()
+                    + "<br>" + search.getName()
+                    + "<br>" + search.getBirth() + "</html>");
+        } else {
+            JOptionPane.showMessageDialog(null, "Nenhum usuário encontrado!");
+        }
+    }//GEN-LAST:event_jTextFieldSearchActionPerformed
 
     /**
      * @param args the command line arguments

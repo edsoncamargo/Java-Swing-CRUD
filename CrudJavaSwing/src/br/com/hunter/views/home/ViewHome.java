@@ -172,9 +172,14 @@ public class ViewHome extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReadActionPerformed
-        ViewShowUsers vsu = new ViewShowUsers();
-        vsu.setVisible(true);
-        this.dispose();
+        ViewShowUsers vsu;
+        try {
+            vsu = new ViewShowUsers();
+            vsu.setVisible(true);
+            this.dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonReadActionPerformed
 
     /**
