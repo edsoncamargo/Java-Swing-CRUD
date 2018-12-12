@@ -43,17 +43,23 @@ public class DaoUser {
         }
     }
 
-    public ArrayList<String> showUsers() throws SQLException {
-        String query = "select name from tb_user";
-        ArrayList names = new ArrayList();
+    public ArrayList<User> showUsers() throws SQLException {
+        String query = "select * from tb_user";
+        ArrayList users = new ArrayList();
 
         pst = conex.getConnection().prepareStatement(query);
         rs = pst.executeQuery(query);
         while (rs.next()) {
-            names.add(rs.getString("Name"));
+            User user = new User();
+            user.setId(Integer.valueOf(rs.getString("ID")));
+            user.setUsername(rs.getString("UserName"));
+            user.setName(rs.getString("Name"));
+            user.setBirth(rs.getString("Birth"));
+            user.setPassword(rs.getString("Password"));
+            users.add(user);
         }
 
-        return names;
+        return users;
     }
 
 }

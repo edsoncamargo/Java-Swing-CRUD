@@ -13,10 +13,11 @@ import java.util.Date;
  */
 public class User {
 
-    String username;
-    String name;
-    String birth;
-    String password;
+    private int id;
+    private String username;
+    private String name;
+    private String birth;
+    private String password;
 
     public User(String username, String name, String birth, String password) {
         this.username = username;
@@ -25,8 +26,20 @@ public class User {
         this.password = password;
     }
 
+    public User(int id, String username, String name, String birth, String password) {
+        this.id = id;
+        this.username = username;
+        this.name = name;
+        this.birth = birth;
+        this.password = password;
+    }
+
     public User() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUsername() {
@@ -59,6 +72,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 }

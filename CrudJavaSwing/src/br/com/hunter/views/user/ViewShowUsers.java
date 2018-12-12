@@ -6,12 +6,14 @@
 package br.com.hunter.views.user;
 
 import br.com.hunter.db.dao.user.DaoUser;
+import br.com.hunter.models.user.User;
 import br.com.hunter.views.home.ViewHome;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,6 +22,8 @@ import javax.swing.DefaultListModel;
 public class ViewShowUsers extends javax.swing.JFrame {
 
     DaoUser du = new DaoUser();
+    User user = new User();
+    ArrayList<User> users = du.showUsers();
 
     /**
      * Creates new form ViewShowUsers
@@ -29,9 +33,8 @@ public class ViewShowUsers extends javax.swing.JFrame {
         DefaultListModel dlm = new DefaultListModel();
 
         try {
-            ArrayList<String> names = du.showUsers();
-            for (String name : names) {
-                dlm.addElement(name);
+            for (User user : this.users) {
+                dlm.addElement(user.getUsername());
             }
             jListUsers.setModel(dlm);
         } catch (Exception e) {
@@ -77,6 +80,11 @@ public class ViewShowUsers extends javax.swing.JFrame {
         jSeparatorBackground.setBackground(new java.awt.Color(212, 11, 41));
 
         jListUsers.setBackground(new java.awt.Color(255, 230, 151));
+        jListUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListUsersMouseClicked(evt);
+            }
+        });
         jScrollPane.setViewportView(jListUsers);
 
         jLabelSearch.setText("Search user by name");
@@ -88,24 +96,21 @@ public class ViewShowUsers extends javax.swing.JFrame {
         jPanelBackgroundLayout.setHorizontalGroup(
             jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackgroundLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 352, Short.MAX_VALUE)
                 .addComponent(jLabelTitle)
                 .addGap(350, 350, 350))
             .addComponent(jSeparatorBackground, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanelBackgroundLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelBackgroundLayout.createSequentialGroup()
-                        .addComponent(jLabelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(758, Short.MAX_VALUE))
+                    .addComponent(jScrollPane)
+                    .addComponent(jTextFieldSearch)
                     .addGroup(jPanelBackgroundLayout.createSequentialGroup()
                         .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane)
-                            .addGroup(jPanelBackgroundLayout.createSequentialGroup()
-                                .addComponent(jLabelSearch)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jTextFieldSearch))
-                        .addContainerGap())))
+                            .addComponent(jLabelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelSearch))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanelBackgroundLayout.setVerticalGroup(
             jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,6 +155,25 @@ public class ViewShowUsers extends javax.swing.JFrame {
             Logger.getLogger(ViewCreateUser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabelBackMouseClicked
+
+    private void jListUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListUsersMouseClicked
+        if (evt.getClickCount() == 2) {
+            User selectedUser = new User();
+            String userClicked = jListUsers.getSelectedValue();
+            for (User user : this.users) {
+                if (user.getUsername() == userClicked) {
+                    selectedUser.setUsername(user.getUsername());
+                    selectedUser.setName(user.getName());
+                    selectedUser.setBirth(user.getBirth());
+                    selectedUser.setId(user.getId());
+                    break;
+                }
+            }
+            JOptionPane.showMessageDialog(null, "<html>" + selectedUser.getUsername()
+                    + "<br>" + selectedUser.getName()
+                    + "<br>" + selectedUser.getBirth() + "</html>");
+        }
+    }//GEN-LAST:event_jListUsersMouseClicked
 
     /**
      * @param args the command line arguments
