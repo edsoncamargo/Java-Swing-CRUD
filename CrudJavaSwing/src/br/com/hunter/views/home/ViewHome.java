@@ -7,6 +7,7 @@ package br.com.hunter.views.home;
 
 import br.com.hunter.db.utils.ConnectionUtils;
 import br.com.hunter.views.user.ViewCreateUser;
+import br.com.hunter.views.user.ViewShowUsers;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,7 +49,6 @@ public class ViewHome extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Home");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setPreferredSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
 
         jPanelBackground.setBackground(new java.awt.Color(246, 246, 246));
@@ -81,6 +81,11 @@ public class ViewHome extends javax.swing.JFrame {
         jButtonRead.setText("Read");
         jButtonRead.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButtonRead.setFocusPainted(false);
+        jButtonRead.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReadActionPerformed(evt);
+            }
+        });
 
         jButtonUpdate.setBackground(new java.awt.Color(255, 230, 151));
         jButtonUpdate.setForeground(new java.awt.Color(0, 0, 0));
@@ -163,8 +168,14 @@ public class ViewHome extends javax.swing.JFrame {
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
         ViewCreateUser vcu = new ViewCreateUser();
         vcu.setVisible(true);
-
+        this.dispose();
     }//GEN-LAST:event_jButtonCreateActionPerformed
+
+    private void jButtonReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReadActionPerformed
+        ViewShowUsers vsu = new ViewShowUsers();
+        vsu.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButtonReadActionPerformed
 
     /**
      * @param args the command line arguments

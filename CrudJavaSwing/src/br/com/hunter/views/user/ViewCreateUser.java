@@ -5,15 +5,14 @@
  */
 package br.com.hunter.views.user;
 
-import br.com.hunter.db.dao.DaoUser;
 import br.com.hunter.models.user.User;
-import br.com.hunter.services.date.ConvertDate;
+import br.com.hunter.services.user.ServicesUser;
 import br.com.hunter.views.home.ViewHome;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,6 +22,8 @@ public class ViewCreateUser extends javax.swing.JFrame {
 
     User user;
     Date correctDate;
+
+    String createSuccess = "O usuário foi adicionado com sucesso!";
 
     /**
      * Creates new form ViewCreateUser
@@ -61,7 +62,6 @@ public class ViewCreateUser extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Create User");
-        setAlwaysOnTop(true);
         setResizable(false);
 
         jPanelBackground.setBackground(new java.awt.Color(246, 246, 246));
@@ -131,14 +131,6 @@ public class ViewCreateUser extends javax.swing.JFrame {
             jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparatorBackground, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackgroundLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabelTitle)
-                .addGap(302, 302, 302))
-            .addGroup(jPanelBackgroundLayout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jLabelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackgroundLayout.createSequentialGroup()
                 .addContainerGap(149, Short.MAX_VALUE)
                 .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabelUsername)
@@ -154,17 +146,26 @@ public class ViewCreateUser extends javax.swing.JFrame {
                     .addComponent(jPasswordField)
                     .addComponent(jTextFieldDate, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(147, 147, 147))
+            .addGroup(jPanelBackgroundLayout.createSequentialGroup()
+                .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelBackgroundLayout.createSequentialGroup()
+                        .addGap(294, 294, 294)
+                        .addComponent(jLabelTitle))
+                    .addGroup(jPanelBackgroundLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelBackgroundLayout.setVerticalGroup(
             jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBackgroundLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap()
                 .addComponent(jLabelBack, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
+                .addGap(30, 30, 30)
                 .addComponent(jLabelTitle)
-                .addGap(65, 65, 65)
+                .addGap(69, 69, 69)
                 .addComponent(jSeparatorBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addComponent(jLabelUsername)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -205,12 +206,17 @@ public class ViewCreateUser extends javax.swing.JFrame {
     private void jButtonCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCreateActionPerformed
         user = new User(jTextFieldUsername.getText(), jTextFieldName.getText(), jTextFieldDate.getText(), jPasswordField.getText());
 
-        DaoUser du = new DaoUser();
         try {
-            du.createUser(user);
+            String reply = ServicesUser.getInstance().createUser(user);
+            if (reply != null) {
+                JOptionPane.showMessageDialog(null, reply);
+            } else {
+                JOptionPane.showMessageDialog(null, createSuccess);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ViewCreateUser.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_jButtonCreateActionPerformed
 
     private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed

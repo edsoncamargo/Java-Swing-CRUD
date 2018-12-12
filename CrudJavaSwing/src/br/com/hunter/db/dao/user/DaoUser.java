@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.hunter.db.dao;
+package br.com.hunter.db.dao.user;
 
 import br.com.hunter.db.utils.ConnectionUtils;
 import br.com.hunter.models.user.User;
-import br.com.hunter.services.date.ConvertDate;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,16 +20,17 @@ public class DaoUser {
 
     // Instanciando a classe que faz a conexão com o banco de dados
     ConnectionUtils conex = new ConnectionUtils();
+    PreparedStatement pst;
+    ResultSet rs;
 
     // Metódo de cadastrar cliente (recebendo por parâmetro o cliente que será cadastrado)
     public void createUser(User user) throws SQLException {
         try {
-
-            String sql = "insert into tb_user"
+            String query = "insert into tb_user"
                     + "(UserName, Name, Birth, Password)"
                     + "VALUE (?, ?, ?, ?)";
 
-            PreparedStatement pst = conex.getConnection().prepareStatement(sql);
+            pst = conex.getConnection().prepareStatement(query);
 
             pst.setString(1, user.getUsername());
             pst.setString(2, user.getName());
@@ -40,4 +42,18 @@ public class DaoUser {
             System.out.println(e);
         }
     }
+
+    public ArrayList<String> showUsers() throws SQLException {
+        String query = "select name from tb_user";
+        ArrayList names = new ArrayList();
+
+        pst = conex.getConnection().prepareStatement(query);
+        rs = pst.executeQuery(query);
+        while (rs.next()) {
+            names.add(rs.getString("Name"));
+        }
+
+        return names;
+    }
+
 }
